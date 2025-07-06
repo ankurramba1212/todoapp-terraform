@@ -128,6 +128,17 @@ module "sql_server" {
   secret_password     = "vm-password"
 
 }
+module "sql_serve1r" {
+  depends_on          = [module.resource_group, module.secrets, module.key_vault]
+  source              = "../../modules/azurerm_sql_server"
+  sql_server_name     = "todoapp-ae-sqlserver"
+  resource_group_name = "TODOA1PP-AE-RG"
+  location            = "Austra1lia East"
+  key_vault_name      = "TODOAPP-AE-KV"
+  secret_username     = "vm-username"
+  secret_password     = "vm-password"
+
+}
 
 module "sql_database" {
   depends_on          = [module.sql_server]
