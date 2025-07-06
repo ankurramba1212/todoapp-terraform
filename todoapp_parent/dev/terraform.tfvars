@@ -23,6 +23,12 @@ subnet_parent = {
     vnet_name           = "TODOAPP-AE-VNET"
     address_prefixes    = ["10.0.1.0/24"]
   }
+   "TODOAPP-AE-SUBNET-FRONTEND1" = {
+    subnet_name         = "TODOAPP-AE-SUBNET-FRONTEND1"
+    resource_group_name = "TODOAPP-AE-RG1"
+    vnet_name           = "TODOAPP-AE-VNET1"
+    address_prefixes    = ["10.0.1.0/24"]
+  }
 
   "TODOAPP-AE-SUBNET-BACKEND" = {
     subnet_name         = "TODOAPP-AE-SUBNET-BACKEND"
