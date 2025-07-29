@@ -20,12 +20,12 @@ parent_subnet = {
     vnet_name           = "TODOAPP-AE-VNET"
     address_prefixes    = ["10.0.1.0/24"]
   }
-  "Backend_Subnet" = {
-    subnet_name         = "TODOAPP-AE-BACKEND-SUBNET"
-    resource_group_name = "TODOAPP-AE-RG"
-    vnet_name           = "TODOAPP-AE-VNET"
-    address_prefixes    = ["10.0.2.0/24"]
-  }
+  # "Backend_Subnet" = {
+  #   subnet_name         = "TODOAPP-AE-BACKEND-SUBNET"
+  #   resource_group_name = "TODOAPP-AE-RG"
+  #   vnet_name           = "TODOAPP-AE-VNET"
+  #   address_prefixes    = ["10.0.2.0/24"]
+  # }
 }
 parent_pip = {
   "frontend_pip" = {
@@ -35,13 +35,13 @@ parent_pip = {
     allocation_method   = "Static"
     sku                 = "Standard"
   }
-  "backend_pip" = {
-    pip_name            = "TODOAPP-AE-BACKEND-PIP"
-    resource_group_name = "TODOAPP-AE-RG"
-    location            = "Australia East"
-    allocation_method   = "Static"
-    sku                 = "Standard"
-  }
+  # "backend_pip" = {
+  #   pip_name            = "TODOAPP-AE-BACKEND-PIP"
+  #   resource_group_name = "TODOAPP-AE-RG"
+  #   location            = "Australia East"
+  #   allocation_method   = "Static"
+  #   sku                 = "Standard"
+  # }
 }
 
 parent_kv = {
@@ -79,15 +79,15 @@ parent_nic = {
     vnet_name             = "TODOAPP-AE-VNET"
     pip_name              = "TODOAPP-AE-FRONTEND-PIP"
   }
-  "backend_nic" = {
-    nic_name              = "TODOAPP-AE-BACKEND-NIC"
-    location              = "Australia East"
-    resource_group_name   = "TODOAPP-AE-RG"
-    ip_configuration_name = "ipconfig2"
-    subnet_name           = "TODOAPP-AE-BACKEND-SUBNET"
-    vnet_name             = "TODOAPP-AE-VNET"
-    pip_name              = "TODOAPP-AE-BACKEND-PIP"
-  }
+  # "backend_nic" = {
+  #   nic_name              = "TODOAPP-AE-BACKEND-NIC"
+  #   location              = "Australia East"
+  #   resource_group_name   = "TODOAPP-AE-RG"
+  #   ip_configuration_name = "ipconfig2"
+  #   subnet_name           = "TODOAPP-AE-BACKEND-SUBNET"
+  #   vnet_name             = "TODOAPP-AE-VNET"
+  #   pip_name              = "TODOAPP-AE-BACKEND-PIP"
+  # }
 }
 
 parent_vm = {
@@ -120,21 +120,21 @@ sudo cp -r build/* /var/www/html
 EOT
 
   }
-  "backend_vm" = {
-    vm_name             = "TODOAPP-AE-BACKEND-VM"
-    resource_group_name = "TODOAPP-AE-RG"
-    location            = "Australia East"
-    size                = "Standard_B1s"
-    key_vault_name      = "TODOAPP-AE-KV"
-    secret_username     = "username"
-    secret_password     = "password"
-    nic_name            = "TODOAPP-AE-BACKEND-NIC"
-    vm_publisher        = "Canonical"
-    vm_offer            = "0001-com-ubuntu-server-focal"
-    vm_sku              = "20_04-lts"
-    vm_version          = "latest"
+  # "backend_vm" = {
+  #   vm_name             = "TODOAPP-AE-BACKEND-VM"
+  #   resource_group_name = "TODOAPP-AE-RG"
+  #   location            = "Australia East"
+  #   size                = "Standard_B1s"
+  #   key_vault_name      = "TODOAPP-AE-KV"
+  #   secret_username     = "username"
+  #   secret_password     = "password"
+  #   nic_name            = "TODOAPP-AE-BACKEND-NIC"
+  #   vm_publisher        = "Canonical"
+  #   vm_offer            = "0001-com-ubuntu-server-focal"
+  #   vm_sku              = "20_04-lts"
+  #   vm_version          = "latest"
 
-  }
+  # }
 }
 
 parent_nsg = {
@@ -153,21 +153,21 @@ parent_nsg = {
       }
     }
   }
-  "backend_nsg" = {
-    nsg_name            = "TODOAPP-AE-BACKEND-NSG"
-    location            = "Australia East"
-    resource_group_name = "TODOAPP-AE-RG"
-    security_rule = {
-      "allow_ssh" = {
-        name                   = "Allow_SSH"
-        destination_port_range = "22"
-      }
-      "allow_http" = {
-        name                   = "Allow_HTTP"
-        destination_port_range = "80"
-      }
-    }
-  }
+  # "backend_nsg" = {
+  #   nsg_name            = "TODOAPP-AE-BACKEND-NSG"
+  #   location            = "Australia East"
+  #   resource_group_name = "TODOAPP-AE-RG"
+  #   security_rule = {
+  #     "allow_ssh" = {
+  #       name                   = "Allow_SSH"
+  #       destination_port_range = "22"
+  #     }
+  #     "allow_http" = {
+  #       name                   = "Allow_HTTP"
+  #       destination_port_range = "80"
+  #     }
+  #   }
+  # }
 }
 parent_nsg_association = {
   "frontend_nsg_association" = {
@@ -175,11 +175,11 @@ parent_nsg_association = {
     nsg_name            = "TODOAPP-AE-FRONTEND-NSG"
     resource_group_name = "TODOAPP-AE-RG"
   }
-  "backend_nsg_association" = {
-    nic_name            = "TODOAPP-AE-BACKEND-NIC"
-    nsg_name            = "TODOAPP-AE-BACKEND-NSG"
-    resource_group_name = "TODOAPP-AE-RG"
-  }
+  # "backend_nsg_association" = {
+  #   nic_name            = "TODOAPP-AE-BACKEND-NIC"
+  #   nsg_name            = "TODOAPP-AE-BACKEND-NSG"
+  #   resource_group_name = "TODOAPP-AE-RG"
+  # }
 }
 
 # parent_sql_server = {
