@@ -1,33 +1,37 @@
-
-
-
-
-resource "azurerm_network_interface" "nic" {
-  # for_each = var.vm_child
-  name                = var.nic_name
-  location            = var.location
-  resource_group_name = var.resource_group_name
-
-  ip_configuration {
-    name                          = var.ipconfig_name
-    subnet_id                     = data.azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = data.azurerm_public_ip.pip.id
-
-  }
-
+data "azurerm_key_vault" "kv_data" {
+  for_each     = var.child_vm
+  name         = each.value.key_vault_name
+  resource_group_name = each.value.resource_group_name
 }
 
+data "azurerm_key_vault_secret" "username" {
+  for_each     = var.child_vm
+  name         = each.value.secret_username
+  key_vault_id = data.azurerm_key_vault.kv_data[each.key].id
+}
+
+data "azurerm_key_vault_secret" "password" {
+  for_each     = var.child_vm
+  name         = each.value.secret_password
+  key_vault_id = data.azurerm_key_vault.kv_data[each.key].id
+}
+data "azurerm_network_interface" "nic_data" {
+  for_each     = var.child_vm
+  name                =each.value.nic_name
+  resource_group_name =each.value.resource_group_name
+}
 resource "azurerm_linux_virtual_machine" "vm" {
-  # for_each = var.vm_child
-  name                            = var.vm_name
-  resource_group_name             = var.resource_group_name
-  location                        = var.location
-  size                            = var.vm_size
-  admin_username                  = data.azurerm_key_vault_secret.vmusername.value
-  admin_password                  = data.azurerm_key_vault_secret.vmpassword.value
+  for_each                        = var.child_vm
+  name                            = each.value.vm_name
+  resource_group_name             = each.value.resource_group_name
+  location                        = each.value.location
+  size                            = each.value.size
+  admin_username                  = data.azurerm_key_vault_secret.username[each.key].value
+  admin_password                  = data.azurerm_key_vault_secret.password[each.key].value
   disable_password_authentication = false
-  network_interface_ids           = [azurerm_network_interface.nic.id, ]
+  network_interface_ids = [
+    data.azurerm_network_interface.nic_data[each.key].id
+  ]
 
   os_disk {
     caching              = "ReadWrite"
@@ -35,22 +39,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   source_image_reference {
-    publisher = var.vm_image_publisher
-    offer     = var.vm_image_offer
-    sku       = var.vm_image_sku
-    version   = var.vm_image_version
+    publisher = each.value.vm_publisher
+    offer     = each.value.vm_offer
+    sku       = each.value.vm_sku
+    version   = each.value.vm_version
   }
-
-  custom_data = base64encode(<<-EOF
-    #!/bin/bash
-    apt update
-    apt install -y nginx
-    systemctl enable nginx
-    systemctl start nginx
-    echo "<h1>Welcome to Azure NGINX VM!</h1>" > /var/www/html/index.html
-  EOF
+  custom_data = (
+    each.value.custom_data_script != null ? base64encode(each.value.custom_data_script) : null
   )
-  
 }
-
-
