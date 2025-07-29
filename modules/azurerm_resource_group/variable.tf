@@ -1,9 +1,5 @@
-# variable "resource_group_name" {}
-# variable "resource_group_location" {}
 
-
-variable "rg_child" {
+variable "child_rg" {
+  description = "Map of child resource groups to create"
   type = map(any)
-
-  
 }
